@@ -1,0 +1,59 @@
+@model IEnumerable<Project.Models.Movie>
+
+@{
+    ViewBag.Title = "Movie Rental";
+}
+
+<div class="container">
+    <h2>Movie Rental</h2>
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Message"]
+        </div>
+    }
+
+    <div class="row">
+        @foreach (var movie in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    @if (movie.Title == "Skazani na Shawshank")
+                    {
+                        <img src="https://fwcdn.pl/fpo/10/48/1048/6925401_1.3.jpg" class="card-img-top" alt="@movie.Title" style="height: 400px; object-fit: cover;">
+                    }
+                    else if (movie.Title == "Ojciec Chrzestny")
+                    {
+                        <img src="https://fwcdn.pl/fpo/10/89/1089/7196615_1.3.jpg" class="card-img-top" alt="@movie.Title" style="height: 400px; object-fit: cover;">
+                    }
+                    else
+                    {
+                        <img src="https://img.icons8.com/ios/452/movie-projector.png" class="card-img-top" alt="@movie.Title" style="height: 200px; object-fit: contain; padding: 1rem; background-color: #f8f5ff;">
+                    }
+                    <div class="card-body">
+                        <h5 class="card-title">@movie.Title</h5>
+                        <p class="card-text">
+                            <strong>Genre:</strong> @movie.Genre<br />
+                            <strong>Release Year:</strong> @movie.ReleaseYear<br />
+                            <strong>Duration:</strong> @movie.Duration minutes
+                        </p>
+                        <p class="card-text">@movie.Description</p>
+                        <p class="card-text">
+                            <strong>Rental Price:</strong> $@movie.RentalPrice
+                        </p>
+                        @Html.ActionLink("Rent Movie", "Rent", new { id = movie.Id }, new { @class = "btn btn-primary" })
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Add any JavaScript functionality here if needed
+        });
+    </script>
+} 

@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dokumentacja Aplikacji Wypożyczalni Filmów</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .sidebar {
+            position: sticky;
+            top: 20px;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .card {
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/">Movie Rental</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/Content/documentation.html">Dokumentacja</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h1 class="mb-4">Dokumentacja Aplikacji Wypożyczalni Filmów</h1>
+
+        <div class="row">
+            <div class="col-md-3">
+                <div class="list-group sidebar">
+                    <a href="#purpose" class="list-group-item list-group-item-action">Cel projektu</a>
+                    <a href="#business" class="list-group-item list-group-item-action">Zastosowanie biznesowe</a>
+                    <a href="#models" class="list-group-item list-group-item-action">Opis modeli</a>
+                    <a href="#relationships" class="list-group-item list-group-item-action">Relacje</a>
+                    <a href="#controllers" class="list-group-item list-group-item-action">Opis kontrolerów</a>
+                    <a href="#views" class="list-group-item list-group-item-action">Widoki</a>
+                    <a href="#database" class="list-group-item list-group-item-action">Opis bazy danych</a>
+                    <a href="#diagram" class="list-group-item list-group-item-action">Diagram bazy danych</a>
+                    <a href="#navigation" class="list-group-item list-group-item-action">Nawigacja</a>
+                    <a href="#work-distribution" class="list-group-item list-group-item-action">Podział pracy</a>
+                </div>
+            </div>
+
+            <div class="col-md-9">
+                <section id="purpose" class="section">
+                    <h2>Cel projektu</h2>
+                    <p>
+                        Aplikacja Wypożyczalni Filmów to system internetowy zaprojektowany do zarządzania wypożyczalnią filmów.
+                        Zapewnia funkcjonalność przeglądania dostępnych filmów, wypożyczania filmów i zarządzania wypożyczeniami.
+
+                    </p>
+                </section>
+
+                <section id="business" class="section">
+                    <h2>Zastosowanie biznesowe</h2>
+                    <p>
+                        Aplikacja może być używana w różnych kontekstach biznesowych:
+                    </p>
+                    <ul>
+                        <li>Wypożyczalnie filmów do zarządzania inwentarzem i transakcjami wypożyczeń</li>
+                        <li>Biblioteki publiczne oferujące wypożyczanie filmów jako część swoich usług</li>
+                        <li>Małe firmy świadczące usługi wypożyczania filmów</li>
+                        <li>Centra społecznościowe lub kluby utrzymujące kolekcję filmów dla członków</li>
+                    </ul>
+                    <p>
+                        System pomaga firmom:
+                    </p>
+                    <ul>
+                        <li>Śledzić, które filmy są dostępne, a które są obecnie wypożyczone</li>
+                        <li>Efektywnie zarządzać inwentarzem filmów</li>
+                        <li>Zapewnić przyjazny interfejs dla klientów do przeglądania dostępnych filmów</li>
+                        <li>Usprawnić proces wypożyczania i zwracania filmów</li>
+                    </ul>
+                </section>
+
+                <section id="models" class="section">
+                    <h2>Opis modeli</h2>
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h3>Movie (Film)</h3>
+                            <p>Reprezentuje film w systemie wypożyczeń.</p>
+                            <ul>
+                                <li>Id (int) - Klucz główny</li>
+                                <li>Title (string) - Tytuł filmu</li>
+                                <li>Description (string) - Opis filmu</li>
+                                <li>RentalPrice (decimal) - Cena wypożyczenia</li>
+                                <li>IsAvailable (bool) - Wskazuje, czy film jest dostępny do wypożyczenia</li>
+                                <li>ReleaseYear (int) - Rok wydania filmu</li>
+                                <li>Genre (string) - Gatunek filmu</li>
+                                <li>Duration (int) - Czas trwania filmu w minutach</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h3>AddMovieViewModel</h3>
+                            <p>Model widoku do dodawania nowych filmów.</p>
+                            <ul>
+                                <li>Title (string) - Tytuł filmu</li>
+                                <li>Description (string) - Opis filmu</li>
+                                <li>RentalPrice (decimal) - Cena wypożyczenia</li>
+                                <li>ReleaseYear (int) - Rok wydania filmu</li>
+                                <li>Genre (string) - Gatunek filmu</li>
+                                <li>Duration (int) - Czas trwania filmu w minutach</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="relationships" class="section">
+                    <h2>Relacje</h2>
+                    <p>
+                        Aplikacja implementuje prostą relację jeden-do-wielu między modelem Movie a jego statusem wypożyczenia:
+                    </p>
+                    <ul>
+                        <li>Jeden film może mieć wiele transakcji wypożyczenia (reprezentowanych przez właściwość IsAvailable)</li>
+                        <li>Każda transakcja wypożyczenia jest powiązana z dokładnie jednym filmem</li>
+                    </ul>
+                    <p>
+                        Ta relacja jest zarządzana przez właściwość IsAvailable w modelu Movie, która śledzi, czy film jest obecnie dostępny do wypożyczenia, czy został wypożyczony.
+                    </p>
+                </section>
+
+                <section id="controllers" class="section">
+                    <h2>Opis kontrolerów</h2>
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h3>MovieController</h3>
+                            <p>Zarządza wszystkimi operacjami związanymi z filmami:</p>
+                            <ul>
+                                <li>Create - Dodawanie nowych filmów do systemu</li>
+                                <li>Read - Przeglądanie dostępnych i wypożyczonych filmów</li>
+                                <li>Update - Oznaczanie filmów jako wypożyczone lub zwrócone</li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h3>HomeController</h3>
+                            <p>Zarządza stroną główną aplikacji i ogólną nawigacją.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="views" class="section">
+                    <h2>Widoki</h2>
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h3>Widoki filmów</h3>
+                            <ul>
+                                <li>Index - Wyświetla wszystkie dostępne filmy</li>
+                                <li>Create - Formularz dodawania nowych filmów</li>
+                                <li>Rented - Pokazuje obecnie wypożyczone filmy</li>
+                            </ul>
+                            <div class="mt-4">
+                                <h4>Przykłady widoków:</h4>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <div class="card">
+                                            <img src="../Images/viewmovies.png" class="card-img-top" alt="Widok dostępnych filmów" style="max-width: 100%; height: auto; object-fit: contain;">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Widok dostępnych filmów</h5>
+                                                <p class="card-text">Przykład widoku listy dostępnych filmów</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <div class="card">
+                                            <img src="../Images/viewrented.png" class="card-img-top" alt="Widok wypożyczonych filmów" style="max-width: 100%; height: auto; object-fit: contain;">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Widok wypożyczonych filmów</h5>
+                                                <p class="card-text">Przykład widoku listy wypożyczonych filmów</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <div class="card">
+                                            <img src="../Images/viewadd.png" class="card-img-top" alt="Widok dodawania filmu" style="max-width: 100%; height: auto; object-fit: contain;">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Widok dodawania filmu</h5>
+                                                <p class="card-text">Przykład formularza dodawania nowego filmu</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <div class="card">
+                                            <img src="../Images/viewhome.png" class="card-img-top" alt="Widok strony głównej" style="max-width: 100%; height: auto; object-fit: contain;">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Strona główna</h5>
+                                                <p class="card-text">Przykład widoku strony powitalnej</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="database" class="section">
+                    <h2>Opis bazy danych</h2>
+                    <p>
+                        Aplikacja używa podejścia Code First Entity Framework do tworzenia i zarządzania bazą danych.
+                        Baza danych jest automatycznie tworzona i wypełniana początkowymi danymi przy starcie aplikacji.
+                    </p>
+                    <p>
+                        Schemat bazy danych jest prosty i efektywny, skupiając się na podstawowej funkcjonalności zarządzania wypożyczalnią filmów.
+                    </p>
+                </section>
+
+                <section id="diagram" class="section">
+                    <h2>Diagram bazy danych</h2>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-8 mx-auto">
+                                    <img src="../Images/database-diagram.png" class="img-fluid" alt="Diagram bazy danych" style="max-width: 100%; height: auto;">
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <h4>Opis diagramu:</h4>
+                                <ul>
+                                    <li>
+                                        <strong>Tabela Movie:</strong>
+                                        <ul>
+                                            <li>Id (int, PK) - Unikalny identyfikator filmu</li>
+                                            <li>Title (string) - Tytuł filmu</li>
+                                            <li>Description (string) - Opis filmu</li>
+                                            <li>RentalPrice (decimal) - Cena wypożyczenia</li>
+                                            <li>IsAvailable (bool) - Status dostępności filmu</li>
+                                            <li>ReleaseYear (int) - Rok wydania</li>
+                                            <li>Genre (string) - Gatunek filmu</li>
+                                            <li>Duration (int) - Czas trwania w minutach</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                                <p class="mt-3">
+                                    Diagram przedstawia strukturę bazy danych aplikacji, która składa się z jednej głównej tabeli Movie.
+                                    Tabela zawiera wszystkie niezbędne informacje o filmach, w tym ich dostępność do wypożyczenia.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="navigation" class="section">
+                    <h2>Nawigacja</h2>
+                    <p>
+                        Aplikacja posiada responsywny pasek nawigacyjny, który zapewnia łatwy dostęp do wszystkich głównych funkcji:
+                    </p>
+                    <ul>
+                        <li>Home - Strona główna - Powrót do strony powitalnej</li>
+                        <li>Available Movies - Dostępne filmy - Pokazuje wszystkie filmy dostępne do wypożyczenia</li>
+                        <li>My Rented Movies - Moje wypożyczone filmy - Wyświetla obecnie wypożyczone filmy</li>
+                        <li>Add Movie - Dodaj film - Formularz dodawania nowych filmów do systemu</li>
+                        <li>Documentation - Dokumentacja - Ta strona dokumentacji</li>
+                    </ul>
+                    <p>
+                        Nawigacja jest spójna na wszystkich stronach, co ułatwia użytkownikom poruszanie się między różnymi sekcjami aplikacji.
+                    </p>
+                </section>
+
+                <section id="work-distribution" class="section">
+                    <h2>Podział pracy</h2>
+                    <div class="card">
+                        <div class="card-body">
+                            <h3>Zakres odpowiedzialności członków zespołu</h3>
+                            <ul>
+                                <li>
+                                    <strong>Gabriela</strong> - Logika Aplikacji (Controllers + Models)
+                                    <ul>
+                                        <li>Implementacja kontrolerów (MovieController, HomeController)</li>
+                                        <li>Implementacja logiki biznesowej</li>
+                                        <li>Obsługa operacji CRUD dla filmów</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <strong>Valeriya</strong> - Konfiguracja, integracja i baza danych
+                                    <ul>
+                                        <li>Konfiguracja Entity Framework i bazy danych</li>
+                                        <li>Implementacja migracji bazy danych</li>
+                                        <li>Zarządzanie zależnościami projektu</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <strong>Julia</strong> - Interfejs użytkownika
+                                    <ul>
+                                        <li>Projektowanie i implementacja widoków</li>
+                                        <li>Stylizacja interfejsu użytkownika</li>
+                                        <li>Tworzenie dokumentacji</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <div class="mt-4">
+                                <p class="text-muted">
+                                    Projekt został stworzony z wykorzystaniem szablonów Visual Studio oraz dostępnych zasobów internetowych,
+                                    które pomogły w szybszym i efektywniejszym rozwoju aplikacji. Wykorzystane zostały standardowe rozwiązania
+                                    i biblioteki, co pozwoliło na skupienie się na implementacji specyficznej logiki biznesowej.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Płynne przewijanie dla linków kotwic
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

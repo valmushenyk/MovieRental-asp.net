@@ -1,0 +1,50 @@
+@model IEnumerable<Project.Models.Movie>
+
+@{
+    ViewBag.Title = "Your Rented Movies";
+}
+
+<div class="container">
+    <h2>Your Rented Movies</h2>
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-info">
+            @TempData["Message"]
+        </div>
+    }
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-warning">
+            You haven't rented any movies yet.
+            @Html.ActionLink("Browse available movies", "Index", "Movie", null, new { @class = "alert-link" })
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var movie in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">@movie.Title</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">@movie.Genre (@movie.ReleaseYear)</h6>
+                            <p class="card-text">@movie.Description</p>
+                            <ul class="list-unstyled">
+                                <li><strong>Duration:</strong> @movie.Duration minutes</li>
+                                <li><strong>Rental Price:</strong> $@movie.RentalPrice</li>
+                            </ul>
+                            @Html.ActionLink("Return Movie", "Return", new { id = movie.Id }, new { @class = "btn btn-secondary" })
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+    <div class="mt-4">
+        @Html.ActionLink("Back to Available Movies", "Index", "Movie", null, new { @class = "btn btn-primary" })
+    </div>
+</div> 
