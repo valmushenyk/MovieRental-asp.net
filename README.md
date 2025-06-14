@@ -21,10 +21,9 @@ Funkcjonalność pozwala m.in. na:
 ## Główne funkcjonalności
 
 - Przeglądanie dostępnych filmów
-- Dodawanie i edytowanie informacji o filmach
+- Dodawanie filmów do wypożyczalni
 - Wypożyczanie i zwracanie filmów
 - Panel główny z listą dostępnych oraz wypożyczonych filmów
-- Walidacja danych
 - Responsywny interfejs
 
 ## Struktura i komponenty
